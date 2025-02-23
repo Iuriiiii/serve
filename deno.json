@@ -1,6 +1,7 @@
 {
   "name": "@online/serve",
   "version": "0.0.1",
+  "exports": "./mod.ts",
   "tasks": {
     "test": "clear && deno test -A --no-check && bun test && npx tsx --test ./tests/*.test.ts"
   },
