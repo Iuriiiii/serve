@@ -1,0 +1,19 @@
+{
+  "name": "serve",
+  "version": "1.0.0",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/bun": "^1.2.3"
+  },
+  "dependencies": {
+    "@inspatial/test": "npm:@jsr/inspatial__test@^0.0.8"
+  }
+}
