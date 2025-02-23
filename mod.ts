@@ -1,5 +1,5 @@
 import { getRuntime, Runtime } from "@online/runtime";
-import nodeHttp, { IncomingMessage } from "node:http";
+import nodeHttp, { type IncomingMessage } from "node:http";
 import nodeHttps from "node:https";
 import { WebSocketServer } from "ws";
 import { Readable } from "node:stream";
@@ -238,6 +238,7 @@ function denoWebsocketToRuntimeSocket(
 /**
  * Serve using the Deno runtime.
  */
+// deno-lint-ignore require-await
 export const denoServe: RuntimeServe = async (options) => {
   const params: Parameters<typeof Deno.serve>[0] = {
     hostname: options.hostname,
@@ -249,12 +250,13 @@ export const denoServe: RuntimeServe = async (options) => {
       const response = await options.handler({
         request,
         upgradeToWebSocket: (data) => {
-          const { socket: denoSocket, response: stupidDenoResponseMember } = Deno.upgradeWebSocket(request);
+          const { socket: denoSocket, response: stupidDenoResponseMember } =
+            Deno.upgradeWebSocket(request);
           const socket = denoWebsocketToRuntimeSocket(denoSocket);
 
           Object.defineProperty(request, "stupidDenoResponseMember", {
             value: stupidDenoResponseMember,
-            enumerable: false
+            enumerable: false,
           });
 
           denoSocket.addEventListener("open", () =>
@@ -262,8 +264,7 @@ export const denoServe: RuntimeServe = async (options) => {
               websocket: socket,
               event: WebsocketEventType.Open,
               context: data,
-            })
-          );
+            }));
 
           denoSocket.addEventListener("message", (event) =>
             options.wsHandler!({
@@ -271,16 +272,14 @@ export const denoServe: RuntimeServe = async (options) => {
               event: WebsocketEventType.Message,
               data: event.data,
               context: data,
-            })
-          );
+            }));
 
           denoSocket.addEventListener("close", () =>
             options.wsHandler!({
               websocket: socket,
               event: WebsocketEventType.Close,
               context: data,
-            })
-          );
+            }));
 
           return true;
         },

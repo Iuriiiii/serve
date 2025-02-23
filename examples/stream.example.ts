@@ -1,4 +1,4 @@
-import { IWebSocketHandlerOptions, serve } from "../mod.ts";
+import { type IWebSocketHandlerOptions, serve } from "../mod.ts";
 
 // Create a ReadableStream that emits numbers every second
 function createNumberStream() {

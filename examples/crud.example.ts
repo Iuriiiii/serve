@@ -166,7 +166,7 @@ async function getTodoById(id: string) {
 // Update a todo
 async function updateTodo(
   id: string,
-  updates: { title?: string; completed?: boolean; },
+  updates: { title?: string; completed?: boolean },
 ) {
   const response = await fetch(`${API_URL}/todos/${id}`, {
     method: "PUT",

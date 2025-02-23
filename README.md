@@ -1,6 +1,9 @@
 # @online/serve
 
-A universal HTTP and WebSocket server implementation that works across Node.js, Deno, and Bun runtimes. This package provides a consistent API for serving HTTP requests and handling WebSocket connections regardless of the underlying JavaScript runtime.
+A universal HTTP and WebSocket server implementation that works across Node.js,
+Deno, and Bun runtimes. This package provides a consistent API for serving HTTP
+requests and handling WebSocket connections regardless of the underlying
+JavaScript runtime.
 
 ## Features
 
@@ -31,7 +34,9 @@ const server = await serve({
   },
 });
 
-console.log(`Server running at http://${server.addr.hostname}:${server.addr.port}`);
+console.log(
+  `Server running at http://${server.addr.hostname}:${server.addr.port}`,
+);
 ```
 
 ### WebSocket Server
@@ -41,18 +46,18 @@ import { serve, WebsocketEventType } from "@online/serve";
 
 const server = await serve({
   port: 3000,
-  
+
   // Handle HTTP requests
   async handler({ request, upgradeToWebSocket }) {
     if (request.headers.get("upgrade") === "websocket") {
       // Upgrade the connection to WebSocket
-      return upgradeToWebSocket({ 
-        context: { userId: "123" } // Optional context
+      return upgradeToWebSocket({
+        context: { userId: "123" }, // Optional context
       });
     }
     return new Response("This is a WebSocket server");
   },
-  
+
   // Handle WebSocket events
   wsHandler({ websocket, event, data, context }) {
     switch (event) {
@@ -80,7 +85,7 @@ const server = await serve({
   port: 443,
   tls: {
     key: "path/to/key.pem",
-    cert: "path/to/cert.pem"
+    cert: "path/to/cert.pem",
   },
   async handler({ request }) {
     return new Response("Secure Hello World!");
@@ -96,20 +101,23 @@ Main function to create a server instance.
 
 #### IServeOptions
 
-- `handler: (options: IHandlerOptions) => Promise<Response>` - HTTP request handler
+- `handler: (options: IHandlerOptions) => Promise<Response>` - HTTP request
+  handler
 - `port?: number` - Port to listen on (default: 0 for random port)
 - `hostname?: string` - Hostname to bind to
 - `signal?: AbortSignal` - Signal to abort the server
 - `tls?: { key: string, cert: string }` - TLS configuration
 - `reusePort?: boolean` - Enable SO_REUSEPORT when available
-- `wsHandler?: (options: IWebSocketHandlerOptions) => void` - WebSocket event handler
+- `wsHandler?: (options: IWebSocketHandlerOptions) => void` - WebSocket event
+  handler
 
 #### IServer
 
 - `close(): Promise<void>` - Stop the server
 - `ref(): void` - Keep the event loop alive
 - `unref(): void` - Allow the event loop to exit
-- `addr: { hostname: string, port: number, transport: "tcp" }` - Server address info
+- `addr: { hostname: string, port: number, transport: "tcp" }` - Server address
+  info
 
 ## Development
 
@@ -127,12 +135,12 @@ MIT License
 
 ## Runtime Compatibility
 
-| Feature          | Node.js | Deno | Bun |
-|-----------------|---------|------|-----|
-| HTTP Server     | ✅      | ✅   | ✅  |
-| WebSocket       | ✅      | ✅   | ✅  |
-| TLS Support     | ✅      | ✅   | ✅  |
-| Port Reuse      | ✅      | ✅   | ✅  |
+| Feature     | Node.js | Deno | Bun |
+| ----------- | ------- | ---- | --- |
+| HTTP Server | ✅      | ✅   | ✅  |
+| WebSocket   | ✅      | ✅   | ✅  |
+| TLS Support | ✅      | ✅   | ✅  |
+| Port Reuse  | ✅      | ✅   | ✅  |
 
 ## Contributing
 

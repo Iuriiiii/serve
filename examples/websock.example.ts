@@ -19,7 +19,7 @@ type WebSocketMessage = ChatMessage | UserStatus;
 
 // Store connected clients
 // deno-lint-ignore no-explicit-any
-const clients = new Map<string, { websocket: any; username: string; }>();
+const clients = new Map<string, { websocket: any; username: string }>();
 
 const broadcastMessage = (message: WebSocketMessage) => {
   for (const client of clients.values()) {

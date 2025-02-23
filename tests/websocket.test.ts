@@ -32,7 +32,8 @@ test("WebSocket basic send and receive functionality", async () => {
 
 test("WebSocket readyState transitions", async () => {
   const port = 8101;
-  let serverSocket: any;
+  // deno-lint-ignore no-explicit-any
+  let _serverSocket: any;
 
   using _ = await serve({
     port,
@@ -42,7 +43,7 @@ test("WebSocket readyState transitions", async () => {
     },
     wsHandler: ({ event, websocket }) => {
       if (event === "open") {
-        serverSocket = websocket;
+        _serverSocket = websocket;
         // Should be OPEN (1)
         assertEquals(websocket.readyState(), 1);
       }
@@ -101,6 +102,7 @@ test("WebSocket close with code and reason", async () => {
 
 test("WebSocket bufferedAmount tracking", async () => {
   const port = 8103;
+  // deno-lint-ignore no-explicit-any
   let serverSocket: any;
   const largeMessage = "x".repeat(1024 * 1024); // 1MB message
 
@@ -131,6 +133,7 @@ test("WebSocket bufferedAmount tracking", async () => {
 
 test("WebSocket binaryType handling", async () => {
   const port = 8104;
+  // deno-lint-ignore no-explicit-any
   let serverSocket: any;
 
   using _ = await serve({
@@ -153,12 +156,14 @@ test("WebSocket binaryType handling", async () => {
 
   // Test different binary types
   const testData = new Uint8Array([1, 2, 3, 4, 5]);
-  
+
   // Test ArrayBuffer
   ws.binaryType = "arraybuffer";
   serverSocket.send(testData);
   const arrayBufferMsg = await new Promise((resolve) => {
-    ws.addEventListener("message", (event) => resolve(event.data), { once: true });
+    ws.addEventListener("message", (event) => resolve(event.data), {
+      once: true,
+    });
   });
   assertEquals(arrayBufferMsg instanceof ArrayBuffer, true);
 
@@ -208,7 +213,7 @@ test("WebSocket multiple concurrent connections", async () => {
   await Promise.all([
     new Promise((resolve) => ws1.addEventListener("open", resolve)),
     new Promise((resolve) => ws2.addEventListener("open", resolve)),
-    new Promise((resolve) => ws3.addEventListener("open", resolve))
+    new Promise((resolve) => ws3.addEventListener("open", resolve)),
   ]);
 
   assertEquals(connectedClients.size, 3);

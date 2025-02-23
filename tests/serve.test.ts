@@ -120,7 +120,6 @@ test("Custom headers", async () => {
   for (const [key, value] of Object.entries(customHeaders)) {
     assertEquals(response.headers.get(key), value);
   }
-
 });
 
 test("Custom Status Code", async () => {
