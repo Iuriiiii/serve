@@ -348,11 +348,12 @@ export const nodeServe: RuntimeServe = (options) => {
     // @ts-ignore: ignore any
     wss.on("connection", (ws, request) => {
       const runtimeWs: IRuntimeWebSocket = {
+        // @ts-ignore: Ignore BufferLike type.
         send: (...args) => ws.send(...args),
         close: (...args) => ws.close(...args),
         getBufferedAmount: () => ws.bufferedAmount,
-        readyState: ws.readyState as IRuntimeWebSocket["readyState"],
-        binaryType: ws.binaryType as IRuntimeWebSocket["binaryType"],
+        readyState: ws.readyState as unknown as IRuntimeWebSocket["readyState"],
+        binaryType: ws.binaryType as unknown as IRuntimeWebSocket["binaryType"],
       };
 
       // Get the context from the request's upgrade data
