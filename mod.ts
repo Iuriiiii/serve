@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { getRuntime, Runtime } from "@online/runtime";
 import nodeHttp, { type IncomingMessage } from "node:http";
 import nodeHttps from "node:https";
@@ -69,7 +70,6 @@ export interface ITls {
 
 export interface IHandlerOptions {
   request: Request;
-  // deno-lint-ignore no-explicit-any
   upgradeToWebSocket(data: any): boolean;
 }
 
@@ -148,7 +148,6 @@ export interface IServer extends AsyncDisposable, Disposable {
 export type RuntimeServe = (options: IServeOptions) => Promise<IServer>;
 export type RuntimeBuffer = string | ArrayBufferLike | Blob | ArrayBufferView;
 
-// deno-lint-ignore no-explicit-any
 function bunWebsocketToRuntimeSocket(bunWebsocket: any): IRuntimeWebSocket {
   const runtimeWebsocket: IRuntimeWebSocket = {
     send: (data) => bunWebsocket.send(data),
@@ -182,20 +181,20 @@ export const bunServe: RuntimeServe = async (options) => {
       }),
     websocket: options.wsHandler
       ? {
-        message: (ws, message) =>
+        message: (ws: any, message: any) =>
           options.wsHandler!({
             websocket: bunWebsocketToRuntimeSocket(ws),
             event: WebsocketEventType.Message,
             data: message,
             context: ws.data,
           }),
-        open: (ws) =>
+        open: (ws: any) =>
           options.wsHandler!({
             websocket: bunWebsocketToRuntimeSocket(ws),
             event: WebsocketEventType.Open,
             context: ws.data,
           }),
-        close: (ws) =>
+        close: (ws: any) =>
           options.wsHandler!({
             websocket: bunWebsocketToRuntimeSocket(ws),
             event: WebsocketEventType.Close,
@@ -359,7 +358,6 @@ export const nodeServe: RuntimeServe = (options) => {
       };
 
       // Get the context from the request's upgrade data
-      // deno-lint-ignore no-explicit-any
       const context = (request as any).upgradeData;
 
       // Handle WebSocket events
@@ -369,7 +367,6 @@ export const nodeServe: RuntimeServe = (options) => {
         context,
       });
 
-      // deno-lint-ignore no-explicit-any
       ws.on("message", (data: any) => {
         options.wsHandler!({
           websocket: runtimeWs,
@@ -406,13 +403,11 @@ export const nodeServe: RuntimeServe = (options) => {
       const request = await incomingMessageToRequest(req, options);
 
       // Handle potential WebSocket upgrades
-      // deno-lint-ignore no-explicit-any
       const upgradeToWebSocket = (data: any) => {
         if (!wss) {
           throw new Error("WebSocket server not initialized");
         }
         // Store the upgrade data for use when the actual upgrade happens
-        // deno-lint-ignore no-explicit-any
         (req as any).upgradeData = data;
         // Don't send a response - the upgrade will happen through the 'upgrade' event
         // throw new Error('WebSocket upgrade in progress');
