@@ -80,18 +80,20 @@ export enum WebsocketEventType {
   Error = "error",
 }
 
-export interface IWebSocketHandlerOptions {
+export interface IWebSocketHandlerOptions<
+  D = unknown,
+  E = unknown,
+  C = unknown,
+> {
   websocket: IRuntimeWebSocket;
   event: WebsocketEventType;
-  // deno-lint-ignore no-explicit-any
-  data?: any;
-  // deno-lint-ignore no-explicit-any
-  error?: any;
+  data?: D;
+  error?: E;
 
   /**
    * The context object passed to the WebSocket handler.
    */
-  context?: unknown;
+  context?: C;
 }
 
 export interface IServeOptions {
@@ -241,7 +243,7 @@ function denoWebsocketToRuntimeSocket(
 // deno-lint-ignore require-await
 export const denoServe: RuntimeServe = async (options) => {
   const params: Parameters<typeof Deno.serve>[0] = {
-    hostname: options.hostname,
+    hostname: options.hostname ?? "localhost",
     port: options.port,
     signal: options.signal,
     cert: options.tls?.cert,

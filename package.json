@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@types/bun": "^1.2.3"
+    "@types/bun": "^1.2.5"
   },
   "dependencies": {
     "@inspatial/test": "npm:@jsr/inspatial__test@^0.0.8"
