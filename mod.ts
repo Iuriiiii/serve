@@ -211,8 +211,8 @@ export const bunServe: RuntimeServe = async (options) => {
   return {
     close: stopServer,
     addr: {
-      hostname: server.hostname,
-      port: server.port,
+      hostname: server.hostname || "localhost",
+      port: server.port || 5037,
       transport: "tcp",
     },
     ref: server.ref,
