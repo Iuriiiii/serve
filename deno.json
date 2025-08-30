@@ -1,16 +1,16 @@
 {
   "name": "@online/serve",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "exports": "./mod.ts",
   "tasks": {
     "test": "clear && deno test -A --no-check && bun test && npx tsx --test ./tests/*.test.ts"
   },
   "imports": {
     "@online/runtime": "jsr:@online/runtime@^0.1.2",
-    "@std/assert": "jsr:@std/assert@1",
-    "@types/bun": "npm:@types/bun@^1.2.5",
-    "@types/ws": "npm:@types/ws@^8.18.0",
-    "ws": "npm:ws@^8.18.0"
+    "@std/assert": "jsr:@std/assert@^1.0.14",
+    "@types/bun": "npm:@types/bun@^1.2.21",
+    "@types/ws": "npm:@types/ws@^8.18.1",
+    "ws": "npm:ws@^8.18.3"
   },
   "nodeModulesDir": "auto"
 }
